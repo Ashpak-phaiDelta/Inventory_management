@@ -1,26 +1,25 @@
 import tkinter as tk
+from ttkwidgets.autocomplete import AutocompleteCombobox
 
 n_row=0
-distributor_names=["Liqiud Gold"]
-category_=[]
-brand_=[]
-product_=[]
+distributor_names=["Liqiud Gold","nixon","kishor"]
+category_=["beer","whiskey","rum"]
+brand_=["kingfisher","Bira"]
+product_=["Draught","premium","royal"]
 
 
 col_name={'Distributor':distributor_names,"Invoice No.":None,"Category":category_,"Brand":brand_,"Product":product_,"Purchase Qty":None,"Purchase Rate":None,"Estimate sale rate":None}
 grid_={'0':col_name}
 
 inward_UI=tk.Tk()
-inward_UI.title(" Inventory App ")
-
-    
+inward_UI.title(" Inventory App ")    
 
 
 def add_col_name():
     global col_name
     for col in col_name:
         label = tk.Label(text = col)
-        label.grid(column=col_name.index(col),row=0)
+        label.grid(column=list(col_name).index(col),row=0)
 
 def add_row():
     global n_row
@@ -29,9 +28,8 @@ def add_row():
     n_row=n_row+1
     grid_[str(n_row)]=[]
     for col in col_name:
-        Entry = tk.Entry()
-        Entry.grid(column=col_name.index(col),row=n_row)
-        # print(i,n_row)
+        Entry = AutocompleteCombobox(inward_UI, completevalues=col_name[col])
+        Entry.grid(row=n_row, column=list(col_name).index(col))
         grid_[str(n_row)].append(Entry)
     delete_button=tk.Button(inward_UI,text="delete",command=delete_row,bg="red")
     delete_button.grid(column=len(col_name)+1,row=n_row)    
@@ -47,7 +45,7 @@ def fetch_data():
     for i in range(1,n_row+1):
         row_data={}
         for col in col_name:
-            row_data[col]=grid_[str(i)][col_name.index(col)].get()
+            row_data[col]=grid_[str(i)][list(col_name).index(col)].get()
         data.append(row_data)
     print(data)
     return data
@@ -57,11 +55,10 @@ def delete_row():
 
 def insert_data(data):
     test_={}
-    print(type(data))
     for i in range(len(data)):
         for col in col_name:
             test_[col]=data[i][col]
-        print(test_)
+
 
 add_col_name()
 add_row()
