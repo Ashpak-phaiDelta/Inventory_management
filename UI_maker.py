@@ -2,15 +2,19 @@ import tkinter as tk
 from ttkwidgets.autocomplete import AutocompleteCombobox
 from datetime import date
 
-distributor_names=["Liqiud Gold","nixon","kishor"]
-category_=["beer","whiskey","rum"]
-brand_=["kingfisher","Bira"]
-product_=["Draught","premium","royal"]
-
-inward_col_name={'Distributor':distributor_names,"Invoice No.":None,"Category":category_,"Brand":brand_,"Product":product_,"Purchase Qty":None,"Purchase Rate":None,"Estimate sale rate":None}
-inventory_data=["Date", "Batch", "Distributor","Invoice No.","Brand","Product"]
 
 data=[]
+
+class Grid_loctor():
+    def __init__(self,win,row,col):
+        self.win=win
+        self.row=row
+        self.col=col
+
+    def print_row(self):
+        self.win.clear_row(self.row)
+
+
 
 class create_window():
     def __init__(self,window_name,colum_names):
@@ -25,21 +29,25 @@ class create_window():
 
     def add_lable(self):
         for col in self.column_names:
-            label = self.tk.Label(self.window , text = col)
+            label = self.tk.Label(self.window , text = col,width=15, justify= 'left')
             label.grid(column=list(self.column_names).index(col),row=0)
 
     def add_row(self):
         self.n_row=self.n_row+1
         self.grid_[str(self.n_row)]=[]
         for col in self.column_names:
-            Entry = AutocompleteCombobox(self.window, completevalues=self.column_names[col])
+            Entry = AutocompleteCombobox(self.window, width=15, completevalues=self.column_names[col])
             Entry.grid(row=self.n_row, column=list(self.column_names).index(col))
             self.grid_[str(self.n_row)].append(Entry)
-        delete_button=self.tk.Button(self.window,text="delete",command=self.delete_row,bg="red")
-        delete_button.grid(column=len(self.column_names)+1,row=self.n_row)    
+        button_obj=Grid_loctor(self, self.n_row, len(self.column_names)+1)
+        clear_button=ttk.Button(self.window,text="clear",command=button_obj.print_row,takefocus=False)
+        clear_button.grid(column=len(self.column_names)+1,row=self.n_row)    
 
-    def delete_row(self):
-        pass
+
+    def clear_row(self,row):
+        for i in self.grid_[str(row)]:
+            i.set("")
+
 
     def add_button(self,text,color,func,col,row):
         add_button=self.tk.Button(self.window,text=text,command=func,bg=color)
@@ -66,7 +74,7 @@ class create_window():
         print("feeding Data : ",data)
         for row in data:
             for col in self.column_names:
-                entry = tk.Entry(self.window)
+                entry = tk.Entry(self.window,width=15)
                 if col in row:
                     entry.grid(row=list(data).index(row)+1, column=list(self.column_names).index(col), sticky="ew")
                     entry.insert(0, row[col])
@@ -77,14 +85,3 @@ class create_window():
 
 
 
-Inward_UI=create_window("Inward",inward_col_name)
-Inward_UI.add_button("add","yellow",Inward_UI.add_row,0,15)
-Inward_UI.add_button("Confirm","cyan",Inward_UI.confim,10,15)
-
-
-Inward_UI.tk.mainloop()
-
-inventory_page=create_window("Invent_page",inventory_data)
-inventory_page.feed_data()
-
-inventory_page.tk.mainloop()
