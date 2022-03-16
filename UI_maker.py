@@ -40,7 +40,7 @@ class create_window():
             Entry.grid(row=self.n_row, column=list(self.column_names).index(col))
             self.grid_[str(self.n_row)].append(Entry)
         button_obj=Grid_loctor(self, self.n_row, len(self.column_names)+1)
-        clear_button=ttk.Button(self.window,text="clear",command=button_obj.print_row,takefocus=False)
+        clear_button=self.tk.Button(self.window,text="clear",command=button_obj.print_row,takefocus=False)
         clear_button.grid(column=len(self.column_names)+1,row=self.n_row)    
 
 
