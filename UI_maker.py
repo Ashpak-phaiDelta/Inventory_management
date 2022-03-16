@@ -67,6 +67,14 @@ class create_window():
             for col in self.column_names :
                 row_data[col]=self.grid_[str(i)][list(self.column_names).index(col)].get()
             data.append(row_data)
+        for i in data.copy():
+            e=None
+            for key in i:
+                if i[key]!="":
+                    e=False
+            if e is None:
+                data.pop(data.index(i))
+
         return data
 
     def feed_data(self):
