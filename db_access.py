@@ -27,8 +27,7 @@ def get_results(db_cursor):
     return desc ,results
 
 
-def get_all_product_details():
-    sql = 'select * from product_master;'
+def run_sql_query(sql):
     cursor = mydb.cursor()
     cursor.execute(sql)
     desc , results = get_results(cursor)
